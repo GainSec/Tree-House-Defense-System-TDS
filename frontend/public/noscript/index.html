@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <title>TDS 3D SIGINT World Static Preview</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        min-width: 320px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 25% 20%, rgba(0, 180, 170, 0.16), transparent 32%),
+          radial-gradient(circle at 80% 70%, rgba(200, 46, 62, 0.12), transparent 28%),
+          linear-gradient(135deg, #05070a 0%, #101416 48%, #050708 100%);
+        color: #dcefff;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        position: relative;
+        display: grid;
+        width: 100%;
+        height: 100%;
+        place-content: center;
+        overflow: hidden;
+        border: 1px solid rgba(141, 236, 229, 0.2);
+        padding: 24px;
+        text-align: center;
+      }
+
+      main::before {
+        position: absolute;
+        inset: 0;
+        content: "";
+        background-image:
+          linear-gradient(rgba(121, 241, 229, 0.08) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(121, 241, 229, 0.08) 1px, transparent 1px);
+        background-size: 40px 40px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.75), transparent);
+      }
+
+      section {
+        position: relative;
+        z-index: 1;
+      }
+
+      .status {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        max-width: calc(100% - 32px);
+        padding: 10px 12px;
+        border: 1px solid rgba(141, 236, 229, 0.28);
+        background: rgba(4, 11, 13, 0.76);
+        color: #dcefff;
+        font-size: 0.86rem;
+      }
+
+      strong {
+        color: #7df2e6;
+      }
+
+      h1 {
+        margin: 0;
+        color: #f1fbff;
+        font-size: clamp(2rem, 8vw, 5.5rem);
+        font-weight: 800;
+        letter-spacing: 0;
+      }
+
+      p {
+        max-width: 560px;
+        margin: 12px auto 0;
+        color: rgba(220, 239, 255, 0.78);
+        font-size: 1rem;
+        line-height: 1.5;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="status"><strong>TDS</strong> no-script preview</div>
+      <section>
+        <h1>TDS Lab</h1>
+        <p>
+          Static LAN preview is visible. The interactive 3D SIGINT world needs
+          browser JavaScript allowed for this host.
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

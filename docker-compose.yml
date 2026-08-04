@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: postgres:18
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-tds}
+      POSTGRES_USER: ${POSTGRES_USER:-tds}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tds_dev_password}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-tds} -d ${POSTGRES_DB:-tds}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  mqtt:
+    image: eclipse-mosquitto:2
+    ports:
+      - "127.0.0.1:1883:1883"
+    volumes:
+      - ./services/mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+
+  control:
+    build:
+      context: .
+      dockerfile: control/Dockerfile
+    user: "${TDS_HOST_UID:-1000}:${TDS_HOST_GID:-1000}"
+    environment:
+      TDS_CONTROL_SYS_USB_PATH: /host/sys/bus/usb/devices
+      TDS_CONTROL_ENABLE_HOST_ACTIONS: ${TDS_CONTROL_ENABLE_HOST_ACTIONS:-0}
+      XDG_RUNTIME_DIR: /run/user/${TDS_HOST_UID:-1000}
+      DBUS_SESSION_BUS_ADDRESS: unix:path=/run/user/${TDS_HOST_UID:-1000}/bus
+    volumes:
+      - /sys/bus/usb/devices:/host/sys/bus/usb/devices:ro
+      - /sys/devices:/host/sys/devices:ro
+      - /run/user/${TDS_HOST_UID:-1000}:/run/user/${TDS_HOST_UID:-1000}
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    environment:
+      TDS_DATABASE_URL: ${TDS_DATABASE_URL:-postgresql+psycopg://tds:tds_dev_password@postgres:5432/tds}
+      TDS_INGEST_API_KEY: ${TDS_INGEST_API_KEY:-change-me}
+      TDS_MQTT_HOST: ${TDS_MQTT_HOST:-mqtt}
+      TDS_MQTT_PORT: ${TDS_MQTT_PORT:-1883}
+      TDS_MQTT_ENABLED: ${TDS_MQTT_ENABLED:-true}
+      TDS_CONTROL_URL: ${TDS_CONTROL_URL:-http://control:8090}
+      TDS_CONTROL_TIMEOUT_SECONDS: ${TDS_CONTROL_TIMEOUT_SECONDS:-3.0}
+    ports:
+      - "${TDS_API_BIND_HOST:-127.0.0.1}:8080:8080"
+    volumes:
+      - ./var/log/ltesniffer:/var/log/tds/ltesniffer
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mqtt:
+        condition: service_started
+      control:
+        condition: service_started
+
+volumes:
+  postgres_data:

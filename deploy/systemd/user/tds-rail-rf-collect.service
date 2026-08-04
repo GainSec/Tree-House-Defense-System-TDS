@@ -1,0 +1,13 @@
+[Unit]
+Description=TDS passive rail RF collector
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=@TDS_ROOT@
+EnvironmentFile=@TDS_ROOT@/.env
+Environment=TDS_USE_DASHBOARD_SETTINGS=true
+ExecStart=@TDS_ROOT@/.venv/bin/python tools/rail_rf_collect.py
+TimeoutStartSec=75s
+StandardOutput=null
+StandardError=journal

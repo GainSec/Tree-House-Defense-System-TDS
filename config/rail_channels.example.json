@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "frequency_mhz": 160.225,
+      "operator": "Example Railroad",
+      "route": "Local subdivision or rail line",
+      "usage": "road_dispatch"
+    },
+    {
+      "frequency_mhz": 160.950,
+      "operator": "Example Railroad",
+      "route": "Yard or nearby branch",
+      "usage": "yard_operations"
+    }
+  ]
+}

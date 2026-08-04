@@ -1,0 +1,14 @@
+[Unit]
+Description=TDS LibreSDR LTE range scan collector
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=@TDS_ROOT@
+EnvironmentFile=@TDS_ROOT@/.env
+Environment=TDS_LTESNIFFER_USE_DASHBOARD_SETTINGS=true
+Environment=TDS_LTESNIFFER_FORCE_SCAN_RANGES=true
+ExecStart=@TDS_ROOT@/.venv/bin/python tools/ltesniffer_collect.py --mode probe --http-timeout 60
+TimeoutStartSec=420s
+StandardOutput=journal
+StandardError=journal

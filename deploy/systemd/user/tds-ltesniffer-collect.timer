@@ -1,0 +1,13 @@
+[Unit]
+Description=Run TDS LibreSDR LTE probe collector
+
+[Timer]
+OnBootSec=60s
+OnUnitActiveSec=30s
+AccuracySec=5s
+RandomizedDelaySec=5s
+Persistent=true
+Unit=tds-ltesniffer-collect.service
+
+[Install]
+WantedBy=timers.target

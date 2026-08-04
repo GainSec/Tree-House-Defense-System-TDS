@@ -1,0 +1,13 @@
+[Unit]
+Description=TDS Intercept RF platform collector
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=@TDS_ROOT@
+EnvironmentFile=@TDS_ROOT@/.env
+Environment=TDS_USE_DASHBOARD_SETTINGS=true
+ExecStart=@TDS_ROOT@/.venv/bin/python tools/intercept_collect.py
+TimeoutStartSec=25s
+StandardOutput=null
+StandardError=journal

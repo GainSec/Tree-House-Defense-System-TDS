@@ -1,0 +1,13 @@
+[Unit]
+Description=Run TDS OpenWrt observation collector
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=30s
+AccuracySec=5s
+RandomizedDelaySec=5s
+Persistent=true
+Unit=tds-openwrt-collect.service
+
+[Install]
+WantedBy=timers.target

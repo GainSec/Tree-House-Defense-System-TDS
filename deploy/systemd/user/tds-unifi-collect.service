@@ -1,0 +1,13 @@
+[Unit]
+Description=TDS UniFi observation collector
+Documentation=file:@TDS_ROOT@/docs/unifi.md
+
+[Service]
+Type=oneshot
+WorkingDirectory=@TDS_ROOT@
+EnvironmentFile=@TDS_ROOT@/.env
+Environment=TDS_USE_DASHBOARD_SETTINGS=true
+ExecStart=@TDS_ROOT@/.venv/bin/python tools/unifi_collect.py
+TimeoutStartSec=25s
+StandardOutput=null
+StandardError=journal

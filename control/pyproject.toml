@@ -1,0 +1,18 @@
+[project]
+name = "tds-control"
+version = "0.1.0"
+description = "Host hardware and collector control sidecar for TDS"
+requires-python = ">=3.13"
+dependencies = [
+  "fastapi>=0.124",
+  "pydantic>=2.12",
+  "uvicorn[standard]>=0.38",
+]
+
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]

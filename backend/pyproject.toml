@@ -1,0 +1,31 @@
+[project]
+name = "tds-backend"
+version = "0.1.0"
+description = "Backend services for Treehouse Defense System"
+requires-python = ">=3.13"
+dependencies = [
+  "alembic>=1.17",
+  "fastapi>=0.124",
+  "httpx>=0.28",
+  "paho-mqtt>=2.1",
+  "psycopg[binary]>=3.3",
+  "pydantic-settings>=2.12",
+  "sqlalchemy>=2.0",
+  "uvicorn[standard]>=0.38",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=9.0",
+]
+
+[project.scripts]
+tds = "app.cli:main"
+
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["app*"]

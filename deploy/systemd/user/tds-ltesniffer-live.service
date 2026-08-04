@@ -1,0 +1,13 @@
+[Unit]
+Description=TDS LibreSDR LTE live private-testbed collector
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=@TDS_ROOT@
+EnvironmentFile=@TDS_ROOT@/.env
+Environment=TDS_LTESNIFFER_USE_DASHBOARD_SETTINGS=true
+ExecStart=@TDS_ROOT@/.venv/bin/python tools/ltesniffer_collect.py
+TimeoutStartSec=0
+StandardOutput=journal
+StandardError=journal

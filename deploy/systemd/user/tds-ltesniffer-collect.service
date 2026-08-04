@@ -1,0 +1,13 @@
+[Unit]
+Description=TDS LibreSDR LTE probe collector
+After=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=@TDS_ROOT@
+EnvironmentFile=@TDS_ROOT@/.env
+Environment=TDS_LTESNIFFER_ENABLED=false
+ExecStart=@TDS_ROOT@/.venv/bin/python tools/ltesniffer_collect.py --mode probe
+TimeoutStartSec=45s
+StandardOutput=null
+StandardError=journal

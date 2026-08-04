@@ -1,0 +1,17 @@
+[Unit]
+Description=TDS Intercept MQTT rotating RF collector
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=@TDS_ROOT@
+EnvironmentFile=@TDS_ROOT@/.env
+Environment=TDS_USE_DASHBOARD_SETTINGS=true
+ExecStart=@TDS_ROOT@/.venv/bin/python tools/intercept_mqtt_collect.py --hackrf-rotation
+Restart=always
+RestartSec=5
+StandardOutput=null
+StandardError=journal
+
+[Install]
+WantedBy=default.target

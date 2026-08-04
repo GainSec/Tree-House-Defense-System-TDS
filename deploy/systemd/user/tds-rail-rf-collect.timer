@@ -1,0 +1,13 @@
+[Unit]
+Description=Run TDS passive rail RF collector
+
+[Timer]
+OnBootSec=45s
+OnUnitActiveSec=15s
+AccuracySec=5s
+RandomizedDelaySec=3s
+Persistent=true
+Unit=tds-rail-rf-collect.service
+
+[Install]
+WantedBy=timers.target

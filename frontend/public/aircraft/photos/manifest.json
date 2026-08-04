@@ -1,0 +1,86 @@
+{
+  "photos": {
+    "airbus-a320": {
+      "author": "Julian Herzog (Website)",
+      "commons_title": "File:Lufthansa Airbus A320-211 D-AIQT 01.jpg",
+      "file": "airbus-a320.jpg",
+      "label": "Airbus A320 family",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Lufthansa_Airbus_A320-211_D-AIQT_01.jpg"
+    },
+    "airbus-h145": {
+      "author": "Acabashi",
+      "commons_title": "File:Airbus Helicopter H145 over Haringey London England.jpg",
+      "file": "airbus-h145.jpg",
+      "label": "Airbus H145 / EC145 helicopter",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Airbus_Helicopter_H145_over_Haringey_London_England.jpg"
+    },
+    "boeing-737": {
+      "author": "ZLEA",
+      "commons_title": "File:Boeing 737-8 MAX 8 (N8794Q, msn 67784, ln 8442) (4-14-2024).jpg",
+      "file": "boeing-737.jpg",
+      "label": "Boeing 737 family",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Boeing_737-8_MAX_8_(N8794Q,_msn_67784,_ln_8442)_(4-14-2024).jpg"
+    },
+    "boeing-767": {
+      "author": "Aeroprints.com",
+      "commons_title": "File:N382AN Boeing 767 American (9322442594).jpg",
+      "file": "boeing-767.jpg",
+      "label": "Boeing 767 family",
+      "license": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:N382AN_Boeing_767_American_(9322442594).jpg"
+    },
+    "boeing-777": {
+      "author": "Aero Icarus from Z\u00fcrich, Switzerland",
+      "commons_title": "File:Asiana Airlines Boeing 777-200ER; HL7742@HKG;31.07.2011 614fz (6052589349).jpg",
+      "file": "boeing-777.jpg",
+      "label": "Boeing 777 family",
+      "license": "CC BY-SA 2.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/2.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Asiana_Airlines_Boeing_777-200ER;_HL7742@HKG;31.07.2011_614fz_(6052589349).jpg"
+    },
+    "boeing-787": {
+      "author": "Julian Herzog (Website)",
+      "commons_title": "File:Qatar Airways Boeing 787-8 Dreamliner A7-BCO MUC 2015 01.jpg",
+      "file": "boeing-787.jpg",
+      "label": "Boeing 787 Dreamliner",
+      "license": "CC BY 4.0",
+      "license_url": "https://creativecommons.org/licenses/by/4.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Qatar_Airways_Boeing_787-8_Dreamliner_A7-BCO_MUC_2015_01.jpg"
+    },
+    "embraer-ejet": {
+      "author": "Richard Silagi",
+      "commons_title": "File:United Express (Skywest) Embraer E175 N134SY at SFO April 2017.jpg",
+      "file": "embraer-ejet.jpg",
+      "label": "Embraer regional jet family",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:United_Express_(Skywest)_Embraer_E175_N134SY_at_SFO_April_2017.jpg"
+    },
+    "king-air": {
+      "author": "David Aughinbaugh II",
+      "commons_title": "File:Beechcraft King Air C90GTx Sideview.jpg",
+      "file": "king-air.jpg",
+      "label": "Beechcraft King Air family",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Beechcraft_King_Air_C90GTx_Sideview.jpg"
+    },
+    "small-ga": {
+      "author": "ZLEA",
+      "commons_title": "File:Beechcraft A36 Bonanza (N1835F, cn E-2157) (4-13-2024).jpg",
+      "file": "small-ga.jpg",
+      "label": "Small general aviation aircraft",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source_url": "https://commons.wikimedia.org/wiki/File:Beechcraft_A36_Bonanza_(N1835F,_cn_E-2157)_(4-13-2024).jpg"
+    }
+  },
+  "version": 1
+}

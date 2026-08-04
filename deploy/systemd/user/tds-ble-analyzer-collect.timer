@@ -1,0 +1,13 @@
+[Unit]
+Description=Run TDS WCH BLE Analyzer collector
+
+[Timer]
+OnBootSec=45s
+OnUnitActiveSec=15s
+AccuracySec=5s
+RandomizedDelaySec=5s
+Persistent=true
+Unit=tds-ble-analyzer-collect.service
+
+[Install]
+WantedBy=timers.target

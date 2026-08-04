@@ -1,0 +1,13 @@
+[Unit]
+Description=Run TDS UniFi observation collector
+
+[Timer]
+OnBootSec=30s
+OnUnitActiveSec=30s
+AccuracySec=5s
+RandomizedDelaySec=5s
+Persistent=true
+Unit=tds-unifi-collect.service
+
+[Install]
+WantedBy=timers.target
