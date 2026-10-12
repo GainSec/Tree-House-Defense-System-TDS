@@ -69,7 +69,7 @@ async function serveStatic(pathname, response) {
     return false;
   }
 }
-const SITE = { latitude: 39.1, longitude: -77.17, label: "Mock site (synthetic)", source: "mock" };
+const SITE = { latitude: 36.1, longitude: -75.17, label: "Mock site (synthetic)", source: "mock" };
 const METERS_PER_DEG_LAT = 111_320;
 const METERS_PER_DEG_LON = METERS_PER_DEG_LAT * Math.cos((SITE.latitude * Math.PI) / 180);
 

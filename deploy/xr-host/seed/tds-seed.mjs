@@ -14,7 +14,7 @@
 const API = (process.env.TDS_API ?? "http://api:8080").replace(/\/$/, "");
 const KEY = process.env.TDS_INGEST_API_KEY ?? "";
 const INTERVAL = Number(process.env.TDS_SEED_INTERVAL_SECONDS ?? 60) * 1000;
-const SITE = { latitude: Number(process.env.TDS_SEED_LAT ?? 39.1), longitude: Number(process.env.TDS_SEED_LON ?? -77.17) };
+const SITE = { latitude: Number(process.env.TDS_SEED_LAT ?? 35.1), longitude: Number(process.env.TDS_SEED_LON ?? -75.17) };
 const M_LAT = 111_320;
 const M_LON = M_LAT * Math.cos((SITE.latitude * Math.PI) / 180);
 
