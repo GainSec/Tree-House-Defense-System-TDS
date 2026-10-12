@@ -1,8 +1,20 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "vitest/config";
 import react from "@vitejs/plugin-react";
 export function manualChunksForTds(id) {
     const normalized = id.replace(/\\/g, "/");
     if (normalized.includes("/node_modules/")) {
+        // XR-only libraries are left ungrouped so default splitting keeps them with the lazy /vr chunk,
+        // out of the desktop entry.
+        if (normalized.includes("/node_modules/@react-three/xr/") ||
+            normalized.includes("/node_modules/@pmndrs/xr/") ||
+            normalized.includes("/node_modules/@pmndrs/pointer-events/") ||
+            normalized.includes("/node_modules/@react-three/uikit/") ||
+            normalized.includes("/node_modules/@pmndrs/uikit") ||
+            normalized.includes("/node_modules/@pmndrs/msdfonts/") ||
+            normalized.includes("/node_modules/iwer/") ||
+            normalized.includes("/node_modules/@iwer/")) {
+            return undefined;
+        }
         if (normalized.includes("/node_modules/react/") || normalized.includes("/node_modules/react-dom/") || normalized.includes("/node_modules/scheduler/")) {
             return "vendor-react";
         }
@@ -37,9 +49,65 @@ export const tdsChunkGroups = [
     { name: "tds-presence", test: (id) => manualChunksForTds(id) === "tds-presence", priority: 20 },
     { name: "tds-data", test: (id) => manualChunksForTds(id) === "tds-data", priority: 10 }
 ];
+const processEnv = globalThis.process?.env ?? {};
+/**
+ * Dev-only: proxy API calls to a TDS backend so the dev server stays same-origin
+ * (no backend CORS changes needed). Override with TDS_DEV_BACKEND, e.g. the mock
+ * backend: TDS_DEV_BACKEND=http://127.0.0.1:8787 npm run dev
+ */
+export const devBackendTarget = processEnv.TDS_DEV_BACKEND || "http://127.0.0.1:8000";
+/** Optional: a gateway session cookie so the dev server can proxy to a login-protected TDS gateway. */
+const devProxy = {
+    target: devBackendTarget,
+    changeOrigin: true,
+    headers: processEnv.TDS_DEV_BACKEND_COOKIE ? { cookie: `tds_session=${processEnv.TDS_DEV_BACKEND_COOKIE}` } : undefined
+};
+const EMULATOR_STUB_ID = "\0tds-xr-emulator-stub";
+/**
+ * The IWER WebXR emulator (and its multi-megabyte synthetic rooms) is a development
+ * aid only. Production builds replace @pmndrs/xr's lazily imported emulator with a stub.
+ */
+export function stripXREmulator() {
+    return {
+        name: "tds-strip-xr-emulator",
+        apply: "build",
+        enforce: "pre",
+        resolveId(source, importer) {
+            if (source === "./emulate.js" && importer && importer.replace(/\\/g, "/").includes("/@pmndrs/xr/dist/")) {
+                return EMULATOR_STUB_ID;
+            }
+            return null;
+        },
+        load(id) {
+            if (id === EMULATOR_STUB_ID) {
+                return 'export function emulate() { throw new Error("WebXR emulator is not included in production builds"); }';
+            }
+            return null;
+        }
+    };
+}
+/** Unique per build so a headset showing a stale cached page is obvious (overlay, Diag panel, shipped logs). */
+const buildId = `${processEnv.TDS_BUILD_SHA ?? "local"}-${new Date().toISOString().replace(/[-:]/g, "").slice(0, 13)}`;
 export default defineConfig({
     base: "/static/",
-    plugins: [react()],
+    define: {
+        __TDS_BUILD__: JSON.stringify(buildId)
+    },
+    plugins: [react(), stripXREmulator()],
+    // One three.js instance: the opt-in IWER emulator (?emulate=1) ships its own nested copy.
+    resolve: { dedupe: ["three"] },
+    server: {
+        proxy: {
+            "/v1": devProxy,
+            "/health": devProxy,
+            "/ready": devProxy,
+            "/xr-log": devProxy
+        }
+    },
+    test: {
+        include: ["src/**/*.test.ts", "scripts/**/*.test.mjs"],
+        environment: "node"
+    },
     build: {
         outDir: "../backend/app/static",
         emptyOutDir: true,

@@ -1,0 +1,14 @@
+{
+ "generic-trigger": {
+  "path": "generic-trigger/profile.json",
+  "deprecated": false
+ },
+ "generic-trigger-squeeze": {
+  "path": "generic-trigger-squeeze/profile.json",
+  "deprecated": false
+ },
+ "generic-trigger-squeeze-thumbstick": {
+  "path": "generic-trigger-squeeze-thumbstick/profile.json",
+  "deprecated": false
+ }
+}

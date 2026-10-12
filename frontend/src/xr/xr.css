@@ -1,0 +1,158 @@
+.xr-shell {
+  position: fixed;
+  inset: 0;
+  background: #1a1f24;
+  color: #dcefff;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.xr-canvas {
+  position: absolute !important;
+  inset: 0;
+}
+
+.xr-loading {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: #1a1f24;
+  color: #7df2e6;
+  font-family: system-ui, sans-serif;
+}
+
+body[data-xr-session="active"] .xr-overlay {
+  display: none;
+}
+
+.xr-overlay {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  width: min(340px, calc(100vw - 24px));
+  max-height: calc(60vh - 24px);
+  overflow: auto;
+  padding: 12px 14px;
+  background: rgba(6, 17, 20, 0.92);
+  border: 1px solid #1d4a4f;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.xr-overlay-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.xr-overlay-header strong {
+  color: #7df2e6;
+  font-size: 15px;
+}
+
+.xr-overlay a {
+  color: #8aa6b4;
+}
+
+.xr-overlay-status {
+  display: grid;
+  gap: 4px;
+  margin: 10px 0 6px;
+}
+
+.xr-overlay-status div,
+.xr-overlay-help dl div {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 8px;
+}
+
+.xr-overlay dt {
+  color: #8aa6b4;
+}
+
+.xr-overlay dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.xr-overlay .tone-good {
+  color: #8dff9b;
+}
+
+.xr-overlay .tone-warn {
+  color: #ffd166;
+}
+
+.xr-overlay .tone-hot {
+  color: #ff4d6d;
+}
+
+.xr-overlay .tone-replay {
+  color: #c4a7ff;
+}
+
+.xr-overlay .tone-muted {
+  color: #8aa6b4;
+}
+
+.xr-overlay-detail {
+  margin: 4px 0;
+  color: #8aa6b4;
+}
+
+.xr-overlay-error {
+  margin: 6px 0;
+  color: #ff4d6d;
+  overflow-wrap: anywhere;
+}
+
+.xr-overlay-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.xr-overlay-actions button {
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #1d4a4f;
+  background: #0b1d22;
+  color: #dcefff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.xr-overlay-actions button.is-primary {
+  background: #7df2e6;
+  border-color: #7df2e6;
+  color: #061114;
+  font-weight: 600;
+}
+
+.xr-overlay-note {
+  color: #ffd166;
+}
+
+.xr-overlay details {
+  margin-top: 8px;
+}
+
+.xr-overlay summary {
+  cursor: pointer;
+  color: #7df2e6;
+}
+
+.xr-overlay ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+.xr-overlay-help dl {
+  display: grid;
+  gap: 2px;
+  margin: 6px 0 0;
+}

@@ -50,6 +50,7 @@ import type {
   SpectrumOccupancyBucket,
   TdsEvent
 } from "../domain/types";
+import { backendBaseUrl, joinBackendUrl } from "./backendConfig";
 
 export interface CollectionResponse<T> {
   items: T[];
@@ -466,9 +467,5 @@ async function readApiErrorDetail(response: Response): Promise<string | null> {
 }
 
 export function apiUrl(endpoint: string): string {
-  if (endpoint.startsWith("http://") || endpoint.startsWith("https://")) {
-    return endpoint;
-  }
-
-  return endpoint;
+  return joinBackendUrl(backendBaseUrl().baseUrl, endpoint);
 }

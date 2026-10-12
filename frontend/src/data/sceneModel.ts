@@ -60,6 +60,8 @@ export interface RfSceneEntity {
   firstSeenAt: string | null;
   lastSeenAt: string | null;
   operatorContext?: RfMapFeature["operator_context"];
+  /** Key for presence dossier/enrichment/entity pages (falls back to identity for older backends). */
+  entityKey: string;
 }
 
 export interface AircraftSceneEntity {
@@ -185,7 +187,8 @@ export function rfFeatureToSceneEntity(feature: RfMapFeature, site: SiteAnchor =
     count: feature.count,
     firstSeenAt: feature.first_seen_at,
     lastSeenAt: feature.last_seen_at,
-    operatorContext: feature.operator_context
+    operatorContext: feature.operator_context,
+    entityKey: feature.state_key || feature.identity
   };
 }
 

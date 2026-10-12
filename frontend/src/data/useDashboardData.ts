@@ -23,6 +23,8 @@ import { buildSceneModel, type SceneModel } from "./sceneModel";
 
 export type LayerStatus = "loading" | "live" | "empty" | "error";
 export type DashboardDataStatus = "loading" | "live" | "error";
+/** Where the current `sceneModel` came from: a successful poll, or the localStorage cache. */
+export type DashboardSceneOrigin = "live" | "cache" | null;
 
 export interface DashboardDataState {
   status: DashboardDataStatus;
@@ -38,6 +40,11 @@ export interface DashboardDataState {
   sensorCoverage: SensorCoverageResponse | null;
   lastUpdatedAt: string | null;
   error: string | null;
+  sceneOrigin: DashboardSceneOrigin;
+  /** Last time any map layer was fetched successfully; survives errors (unlike lastUpdatedAt). */
+  lastLiveAt: string | null;
+  cachedAt: string | null;
+  pollIntervalMs: number;
 }
 
 export interface DashboardDataOptions {
@@ -75,6 +82,11 @@ export function useDashboardData({ pollIntervalMs = DEFAULT_POLL_INTERVAL_MS }: 
   const previousRfResponse = useRef<CollectionResponse<RfMapFeature>>(cachedMapPayload?.rf ?? { items: [], count: 0 });
   const previousAircraftResponse = useRef<CollectionResponse<AircraftMapFeature>>(cachedMapPayload?.aircraft ?? { items: [], count: 0 });
   const rfRequestId = useRef(0);
+  // A scene is only "live" once BOTH feeds have been fetched; until then part of it may still be the localStorage cache.
+  const rfFetched = useRef(false);
+  const aircraftFetched = useRef(false);
+  const hadCache = cachedMapPayload !== null;
+  const originAfterFetch = (): DashboardSceneOrigin => (hadCache && !(rfFetched.current && aircraftFetched.current) ? "cache" : "live");
   const [state, setState] = useState<DashboardDataState>({
     status: "loading",
     sceneModel: cachedSceneModel,
@@ -88,7 +100,11 @@ export function useDashboardData({ pollIntervalMs = DEFAULT_POLL_INTERVAL_MS }: 
     changeBriefing: null,
     sensorCoverage: null,
     lastUpdatedAt: null,
-    error: null
+    error: null,
+    sceneOrigin: cachedSceneModel ? "cache" : null,
+    lastLiveAt: null,
+    cachedAt: cachedMapPayload?.cachedAt ?? null,
+    pollIntervalMs
   });
 
   useEffect(() => {
@@ -113,6 +129,7 @@ export function useDashboardData({ pollIntervalMs = DEFAULT_POLL_INTERVAL_MS }: 
         }
 
         previousAircraftResponse.current = aircraftResponse;
+        aircraftFetched.current = true;
         const sceneModel = buildSceneModel({
           rf: previousRfResponse.current.items,
           aircraft: aircraftResponse.items,
@@ -120,14 +137,18 @@ export function useDashboardData({ pollIntervalMs = DEFAULT_POLL_INTERVAL_MS }: 
         });
         writeLatestCache(previousRfResponse.current, aircraftResponse);
         previousSceneModel.current = sceneModel;
+        const fetchedAt = new Date().toISOString();
         setState((current) => ({
+          ...current,
           status: "live",
           sceneModel,
+          sceneOrigin: originAfterFetch(),
+          lastLiveAt: fetchedAt,
           layers: {
             rf:
               current.layers.rf === "error" || current.layers.rf === "empty"
                 ? current.layers.rf
-                : previousRfResponse.current.items.length > 0
+                : rfFetched.current && previousRfResponse.current.items.length > 0
                   ? "live"
                   : "loading",
             aircraft: sceneModel.aircraftEntities.length > 0 ? "live" : "empty"
@@ -137,7 +158,7 @@ export function useDashboardData({ pollIntervalMs = DEFAULT_POLL_INTERVAL_MS }: 
           rfBursts: rfBurstResponse.items,
           changeBriefing,
           sensorCoverage,
-          lastUpdatedAt: new Date().toISOString(),
+          lastUpdatedAt: fetchedAt,
           error: null
         }));
       } catch (error) {
@@ -145,6 +166,7 @@ export function useDashboardData({ pollIntervalMs = DEFAULT_POLL_INTERVAL_MS }: 
           return;
         }
         setState((current) => ({
+          ...current,
           status: "error",
           sceneModel: previousSceneModel.current,
           layers: {
@@ -175,6 +197,7 @@ export function useDashboardData({ pollIntervalMs = DEFAULT_POLL_INTERVAL_MS }: 
           return;
         }
         previousRfResponse.current = rfResponse;
+        rfFetched.current = true;
         const sceneModel = buildSceneModel({
           rf: rfResponse.items,
           aircraft: previousAircraftResponse.current.items,
@@ -182,15 +205,18 @@ export function useDashboardData({ pollIntervalMs = DEFAULT_POLL_INTERVAL_MS }: 
         });
         writeLatestCache(rfResponse, previousAircraftResponse.current);
         previousSceneModel.current = sceneModel;
+        const fetchedAt = new Date().toISOString();
         setState((current) => ({
           ...current,
           status: "live",
           sceneModel,
+          sceneOrigin: originAfterFetch(),
+          lastLiveAt: fetchedAt,
           layers: {
             rf: rfResponse.items.length > 0 ? "live" : "empty",
             aircraft: sceneModel.aircraftEntities.length > 0 ? "live" : current.layers.aircraft
           },
-          lastUpdatedAt: new Date().toISOString(),
+          lastUpdatedAt: fetchedAt,
           error: null
         }));
       } catch (error) {

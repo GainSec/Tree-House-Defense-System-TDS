@@ -1,0 +1,1 @@
+function e(){throw Error(`WebXR emulator is not included in production builds`)}export{e as emulate};

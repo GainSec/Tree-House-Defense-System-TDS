@@ -1,0 +1,88 @@
+# Lean TDS stack for the XR board: Postgres + API + authenticating gateway.
+# No MQTT, no control sidecar (host USB/systemd actions are not exposed).
+#
+#   cd deploy/xr-host
+#   cp xr-host.env.example xr-host.env   # set passwords
+#   docker compose --env-file xr-host.env up -d --build
+#   docker compose --env-file xr-host.env --profile seed up -d   # + synthetic demo data
+#
+# The gateway is the only published port. It serves the built frontend
+# (backend/app/static), requires a login, proxies an allowlist of /v1 routes to
+# the API, and accepts XR diagnostic logs at /xr-log.
+name: tds-xr
+
+services:
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: tds
+      POSTGRES_USER: tds
+      POSTGRES_PASSWORD: ${TDS_POSTGRES_PASSWORD:?set TDS_POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tds -d tds"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: ../..
+      dockerfile: backend/Dockerfile
+    restart: unless-stopped
+    environment:
+      TDS_DATABASE_URL: postgresql+psycopg://tds:${TDS_POSTGRES_PASSWORD}@postgres:5432/tds
+      TDS_INGEST_API_KEY: ${TDS_INGEST_API_KEY:?set TDS_INGEST_API_KEY}
+      TDS_MQTT_ENABLED: "false"
+      TDS_CONTROL_URL: http://127.0.0.1:9
+      TDS_CONTROL_TIMEOUT_SECONDS: "1.0"
+    # Loopback only: seeding/collectors on this host reach it directly; everything else goes through the gateway.
+    ports:
+      - "127.0.0.1:${TDS_API_PORT:-8080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  gateway:
+    image: node:22-alpine
+    restart: unless-stopped
+    command: ["node", "/app/scripts/tds-xr-gateway.mjs"]
+    environment:
+      TDS_GATEWAY_PORT: "8089"
+      TDS_GATEWAY_UPSTREAM: http://api:8080
+      TDS_GATEWAY_STATIC: /app/static
+      TDS_GATEWAY_AUTH: ${TDS_GATEWAY_AUTH:-off}
+      TDS_GATEWAY_PASSWORD: ${TDS_GATEWAY_PASSWORD:-}
+      TDS_GATEWAY_SECRET: ${TDS_GATEWAY_SECRET:-}
+      TDS_GATEWAY_LOG_DIR: /logs
+      TDS_GATEWAY_ALLOW_WRITES: ${TDS_GATEWAY_ALLOW_WRITES:-presence}
+      # IPs of the HTTPS reverse proxy; only their X-Forwarded-For is trusted for rate limiting.
+      TDS_GATEWAY_TRUSTED_PROXIES: ${TDS_GATEWAY_TRUSTED_PROXIES:-}
+    volumes:
+      - ../../frontend/scripts:/app/scripts:ro
+      - ../../backend/app/static:/app/static:ro
+      - ./logs:/logs
+    ports:
+      - "0.0.0.0:${TDS_GATEWAY_PUBLIC_PORT:-8089}:8089"
+    depends_on:
+      - api
+
+  # Synthetic demo data through the real ingestion API. Opt in: --profile seed
+  seeder:
+    image: node:22-alpine
+    profiles: ["seed"]
+    restart: unless-stopped
+    command: ["node", "/seed/tds-seed.mjs"]
+    environment:
+      TDS_API: http://api:8080
+      TDS_INGEST_API_KEY: ${TDS_INGEST_API_KEY}
+      TDS_SEED_INTERVAL_SECONDS: "60"
+    volumes:
+      - ./seed:/seed:ro
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:

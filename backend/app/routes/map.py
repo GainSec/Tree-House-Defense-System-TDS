@@ -318,6 +318,7 @@ def rf_map_feature(state: CurrentState, now: datetime, site: dict[str, Any] | No
         count=state.seen_count,
         freshness=last_seen_freshness,
         operator_context=operator_context_for_state(state, category),
+        state_key=state.state_key,
     )
 
 

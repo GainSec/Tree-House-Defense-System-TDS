@@ -1,0 +1,54 @@
+{
+ "profileId": "generic-trigger",
+ "overrides": {},
+ "layouts": {
+  "left": {
+   "selectComponentId": "xr-standard-trigger",
+   "components": {
+    "xr-standard-trigger": {
+     "type": "trigger",
+     "gamepadIndices": {
+      "button": 0
+     },
+     "rootNodeName": "trigger",
+     "visualResponses": {}
+    }
+   },
+   "gamepadMapping": "xr-standard",
+   "rootNodeName": "generic-trigger-left",
+   "assetPath": "left.glb"
+  },
+  "right": {
+   "selectComponentId": "xr-standard-trigger",
+   "components": {
+    "xr-standard-trigger": {
+     "type": "trigger",
+     "gamepadIndices": {
+      "button": 0
+     },
+     "rootNodeName": "trigger",
+     "visualResponses": {}
+    }
+   },
+   "gamepadMapping": "xr-standard",
+   "rootNodeName": "generic-trigger-right",
+   "assetPath": "right.glb"
+  },
+  "none": {
+   "selectComponentId": "xr-standard-trigger",
+   "components": {
+    "xr-standard-trigger": {
+     "type": "trigger",
+     "gamepadIndices": {
+      "button": 0
+     },
+     "rootNodeName": "trigger",
+     "visualResponses": {}
+    }
+   },
+   "gamepadMapping": "xr-standard",
+   "rootNodeName": "generic-trigger-none",
+   "assetPath": "none.glb"
+  }
+ }
+}

@@ -18,3 +18,7 @@ frontend/public/maps/*.mbtiles
 data/aircraft/*.csv
 data/aircraft/*.csv.gz
 .worktrees/
+
+# XR host deployment secrets and logs
+deploy/xr-host/xr-host.env
+deploy/xr-host/logs/

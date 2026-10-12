@@ -94,6 +94,8 @@ class RfMapFeature(BaseModel):
     count: int = 1
     freshness: RfFreshness
     operator_context: dict | None = None
+    # Current-state key: presence dossier/enrichment routes are keyed by this, not by identity.
+    state_key: str | None = None
 
 
 class AircraftMapFeature(BaseModel):

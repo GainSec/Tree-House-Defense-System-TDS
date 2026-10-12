@@ -23,6 +23,13 @@ def lte_ui() -> Response:
     return frontend_ui()
 
 
+@router.get("/vr")
+@router.get("/mr")
+@router.get("/xr")
+def xr_ui() -> Response:
+    return frontend_ui()
+
+
 @router.get("/settings")
 def settings_ui() -> Response:
     return frontend_ui()

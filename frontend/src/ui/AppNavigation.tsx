@@ -3,6 +3,7 @@ const NAV_ITEMS = [
   { label: "Presence", href: "/presence", matches: ["/presence"] },
   { label: "Graph", href: "/presence/graph", matches: ["/presence/graph"] },
   { label: "LTE Lab", href: "/lte", matches: ["/lte"] },
+  { label: "XR Board", href: "/vr", matches: ["/vr", "/mr", "/xr"] },
   { label: "Settings", href: "/settings", matches: ["/settings", "/setting"] }
 ];
 

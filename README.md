@@ -12,6 +12,71 @@ TDS is built for authorized environments: your home lab, your network, your SDR
 hardware, your private cellular testbed, or systems you have explicit permission
 to monitor.
 
+## Steam Frame XR
+
+**The first Steam Frame RF and wireless device XR/VR awareness and monitoring
+dashboard, in tabletop and life-size modes.**
+
+<p align="center">
+  <img src="docs/media/tds-xr-board.gif" alt="TDS tabletop board turning over a real room in Steam Frame passthrough" width="400" />
+</p>
+
+<p align="center">
+  <img src="docs/media/tds-xr-card-tabs.gif" alt="Aircraft card switching between Summary, Signal and Evidence tabs" width="260" />
+  <img src="docs/media/tds-xr-alerts.gif" alt="Exceptions card with live RF alerts above the board" width="260" />
+  <img src="docs/media/tds-xr-lifesize.gif" alt="Life-size mode: pointing at and selecting a BLE device in the room" width="260" />
+</p>
+
+Open `/vr` in Chromium XR on the Steam Frame and the TDS map becomes a floating
+board over your real room (colour passthrough, `immersive-ar`), or a life-size
+site around you with aircraft at their true bearing and elevation in the sky.
+Point at a Wi-Fi, BLE, unknown-RF, collector or aircraft token and pull the
+trigger to open its card: summary, signal, evidence and presence history.
+
+- **Tabletop:** grab and carry the board, scale and rotate it with two hands,
+  zoom on a selection up to room scale, and lock it in place. Seated and
+  standing presets.
+- **Life-size:** the site at 1:1 scale around you. Look up to find aircraft;
+  teleport and snap-turn with the thumbsticks.
+- **Operator panels:** exceptions/alerts, selection inspector, find and jump,
+  filters, legend, replay and diagnostics. Every panel can be grabbed and moved.
+- **Same data as the desktop:** `/vr` uses the dashboard's own state and `/v1`
+  API, and labels LIVE, CACHED, STALE, DEMO, ERROR and REPLAY data honestly.
+- **Read-only:** the headset never writes to the backend.
+
+Recorded in the headset on a Steam Frame with Framecorder, against a real TDS
+backend showing LIVE data:
+[30-second highlights](docs/media/tds-xr-highlights.mp4).
+
+Tested on the hardware at 90 fps: pointing selection, the card tabs, panel
+drags, grip carry, two-hand scale and life-size selection. Life-size mode isn't
+aligned to your physical room yet.
+
+### Running it on the Steam Frame
+
+1. Install **Chromium XR** on the Frame from
+   [yellkell/frameplayer](https://github.com/yellkell/frameplayer/releases), an
+   unofficial build of
+   [saphid/chromium-webxr-steam-frame](https://github.com/saphid/chromium-webxr-steam-frame).
+   The stock SteamOS Chromium has no immersive WebXR.
+2. Serve TDS over HTTPS (WebXR needs a secure context). To expose it to a
+   headset read-only, use the gateway in
+   [`deploy/xr-host/README.md`](deploy/xr-host/README.md).
+3. Open `https://<your-host>/vr` in Chromium XR and press **Enter AR**.
+   `/vr` also runs as a desktop simulator in any browser; add `?simulator=1` to
+   stay in it.
+
+| Action | Controller | Desktop simulator |
+| --- | --- | --- |
+| Select a token or press a button | Point and press the **trigger** (aim assist snaps to the nearest token) | Click |
+| Carry the board | Hold **grip** and move the hand | `P`, then drag |
+| Scale and turn | Hold **both grips** and spread or rotate the hands | `+`/`-`, `Q`/`E` |
+| Scale and turn while carrying | **Thumbstick** on the holding hand | n/a |
+| Summon / room scale / lock | Palette **Summon**, **Room**, **Lock** | `C`, n/a, `L` |
+| Zoom in on a selection | Card **Zoom in** | `X` |
+| Move a panel | Point at the bar above it, hold the trigger, move | Drag the bar |
+| Tabletop or life-size | Palette **Board** / **Life-size** | Same |
+
 ## What It Does
 
 TDS answers practical RF and infrastructure questions:
@@ -34,6 +99,9 @@ can also be published to MQTT for downstream automation.
 - **3D RF world**: React Three Fiber scene with a wireframe site model, operator
   avatar, RF markers, BLE/Wi-Fi symbols, infrastructure source objects, airspace,
   and movable dashboard cards.
+- **Steam Frame XR (`/vr`)**: WebXR tabletop board and life-size view for the
+  Steam Frame, with controller selection, spatial inspector/alert cards, and a
+  desktop simulator. See [Steam Frame XR](#steam-frame-xr).
 - **Presence tracking**: Select entities to track, review sightings, see first/last
   seen context, RSSI proximity, co-presence, source confidence, and operator notes.
 - **Replay theater**: Review chronological sighting frames for a selected entity,
@@ -273,6 +341,7 @@ assets.
 - UniFi integration: `docs/unifi.md`
 - RF tooling: `docs/rf-tooling.md`
 - Capture map: `docs/capture-map.md`
+- XR real-backend host deployment: `deploy/xr-host/README.md`
 
 ### Utilizes
 
@@ -290,3 +359,7 @@ TDS builds on or integrates with these open-source projects:
 - Backend/runtime infrastructure: [FastAPI](https://fastapi.tiangolo.com/),
   [PostgreSQL](https://www.postgresql.org/), [Eclipse Mosquitto](https://mosquitto.org/),
   and [Docker Compose](https://docs.docker.com/compose/).
+
+## Author
+
+[Jon "GainSec" Gaines](https://gainsec.com/)

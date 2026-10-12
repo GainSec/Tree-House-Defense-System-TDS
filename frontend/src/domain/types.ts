@@ -131,6 +131,8 @@ export interface RfMapFeature {
     headline?: string | null;
     chips?: Array<{ label: string; tone: string }>;
   } | null;
+  /** Current-state key; presence dossier/enrichment routes are keyed by this (identity may be an identity_hint). */
+  state_key?: string | null;
 }
 
 export interface AircraftMapFeature {
