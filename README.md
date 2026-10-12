@@ -6,7 +6,7 @@
 
 Treehouse Defense System is a self-hosted RF awareness and presence intelligence
 platform. It turns local network telemetry, passive RF observations, infrastructure
-alerts, and optional lab radio tooling into a single operator dashboard.
+alerts, and LTE sniffing tooling into a single operator dashboard.
 
 TDS is built for authorized environments: your home lab, your network, your SDR
 hardware, your private cellular testbed, or systems you have explicit permission
